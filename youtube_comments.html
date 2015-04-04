@@ -3,17 +3,35 @@
 </head>
 
 <body>
-  <h1>Youtube comments!</h1>
 
-  {{> comments}}
+	{{> search}}
+	<div class="container app-width"> 
+		{{> comments}}
+	</div>
 </body>
 
 <template name="comments">
 	{{#each comments}}
-			{{#each this.author}}
-				<h3> {{name.$t}}</h3>
-			{{/each}}
-			<p> {{content.$t}}</p>
-			<p>--------------------------</p>
+		{{>commentItem}}
 	{{/each}}
+</template>
+
+<template name="commentItem">
+  <div class="post">
+	<div class="post-content">
+		{{#each this.author}}
+			<h3>{{name.$t}}</h3> 
+		{{/each}}
+		<p id="date"> Published on: {{published.$t}}</p>
+		<p id="comment-content"> {{content.$t}}</p>
+	</div>
+  </div>
+</template>
+
+<template name="search">
+
+      <input id="search" type="text" class="form-control" placeholder="Youtube video id" style="margin-top:10px; width:89%">
+      <button id="submit" class="btn" type="submit">Go!</button>
+
+
 </template>

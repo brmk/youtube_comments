@@ -50,17 +50,44 @@ if(Meteor.isClient){
                         }
                 });
         }
-        Template.comments.rendered = 
+ /*       Template.comments.rendered = 
                 function(){
-                        videoId="vtAs6YiiRnM"
+                        videoId="D8HqRH5cHPo"
                         maxResults = 50
                         getFirstYouTubeComments(videoId,maxResults);
                 }
-        
+   */     
 
         Template.comments.helpers({
                 comments: function(){
                         return Session.get("comments");
                 }
         });
+
+        Template.search.events={
+                "click #submit": function(e){
+                        value = $("#search").val()
+                        console.log(value)
+                                if(value!=""){
+                                        $("#search").val("");
+                                        getFirstYouTubeComments(value,50)
+                                }
+
+                },
+                "keypress #search" : function(e) {
+                        if(e.which == 13) {
+                                value = $("#search").val()
+                                console.log(value)
+                                if(value!=""){
+                                        $("#search").val("");
+                                        getFirstYouTubeComments(value,50)
+                                }
+                        }
+                }
+        }
+
+       
+
+        
+        
 }
