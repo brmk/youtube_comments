@@ -1,3 +1,4 @@
+if(Meteor.isClient){
         var sum=0;
         function getFirstYouTubeComments(videoId, maxResults){
                 commentQueryUrl="http://gdata.youtube.com/feeds/api/videos/"+videoId+"/comments/?max-results="+maxResults+"&alt=json"
@@ -12,6 +13,7 @@
                                 numberOfReceivedComments = data.feed.entry.length;
                                 console.log(numberOfAllComments)
                                 //if video has more then ::maxResults:: comments
+                                Session.set("comments", data.feed.entry)
                                 if(numberOfAllComments>=maxResults){
                                         nextCommentLink = getNextCommentLink(data.feed.link)
                                         if (nextCommentLink!=false)
@@ -37,8 +39,10 @@
                         dataType: "jsonp",
                         success: function (data) {
                                 sum+=data.feed.entry.length
+                                comments = Session.get("comments")
+                                comments = comments.concat(data.feed.entry)
+                                Session.set("comments", comments)
                                 console.log(data);
-
                                 nextCommentLink = getNextCommentLink(data.feed.link)
                                 if (nextCommentLink!=false)
                                         getAllComments(nextCommentLink);
@@ -46,9 +50,17 @@
                         }
                 });
         }
+        Template.comments.rendered = 
+                function(){
+                        videoId="vtAs6YiiRnM"
+                        maxResults = 50
+                        getFirstYouTubeComments(videoId,maxResults);
+                }
+        
 
-        $(document).ready(function () {
-                videoId="vtAs6YiiRnM"
-                maxResults = 50
-                getFirstYouTubeComments(videoId,maxResults);
+        Template.comments.helpers({
+                comments: function(){
+                        return Session.get("comments");
+                }
         });
+}
