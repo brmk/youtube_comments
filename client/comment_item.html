@@ -1,0 +1,11 @@
+<template name="commentItem">
+  <div class="post">
+	<div class="post-content">
+		{{#each this.author}}
+			<h3>{{name.$t}}</h3> 
+		{{/each}}
+		<p id="date"> Published on: {{published.$t}}</p>
+		<p id="comment-content"> {{content.$t}}</p>
+	</div>
+  </div>
+</template>
